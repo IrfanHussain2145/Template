@@ -15,6 +15,10 @@ router.get("/", async (req, res, next) => {
 router.post("/create-post", async (req, res) => {
   // body should be JSON
   const body = req.body;
+  if (body.password !== 'checker') {
+    return res.sendStatus(1000);
+  }
+
   // create blog model with the request body
   const blog = new BlogModel({content: body.content, title: body.title});
   // remember to await .save();

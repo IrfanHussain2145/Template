@@ -5,12 +5,13 @@ import {Link} from "react-router-dom";
 export function View() {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
-    (async function () {
+    (async function fetchData() {
       const req = await fetch("http://localhost:3000/blog/");
       const json = await req.json();
       setPosts(json);
     })();
   }, []);
+
   return (
     <div>
       <Link to="/"> Home</Link>
@@ -22,7 +23,7 @@ export function View() {
               width: "50vw",
               margin: "auto",
               textAlign: "center",
-            }}
+            }} key = {post.title}
           >
             <h2 style={{margin: "0.2rem"}}>{post.title}</h2>
             <div>{post.content}</div>

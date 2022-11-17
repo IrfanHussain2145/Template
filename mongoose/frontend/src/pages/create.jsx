@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {Link} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export function Create() {
   const [title, setTitle] = useState("");
@@ -15,10 +16,11 @@ export function Create() {
     const requestData = JSON.stringify({title, content, password});
     const headers = {"content-type": "application/json"};
     const req = await fetch('https://localhost:3000/blog/create-post/', {body:requestData, headers, method: "POST"});
-    if (req.status === 500) {
+    if (req.status === 1000) {
       setError(true);
     }
     else {
+      done(true);
       navigate("/view");
     }
 
