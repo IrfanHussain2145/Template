@@ -4,8 +4,10 @@ import {BlogModel} from "../schema/blog.js";
 
 const router = express.Router();
 
+
 /* GET users listing. */
 router.get("/", async (req, res, next) => {
+  console.log("get req hit ")
   // find blogs based on no condition==> get all blogs
   const blogs = await BlogModel.find({});
   // convert each blog to an object and send an array to client
@@ -14,8 +16,9 @@ router.get("/", async (req, res, next) => {
 
 router.post("/create-post", async (req, res) => {
   // body should be JSON
+  console.log("EXPRESS WAS HIT");
   const body = req.body;
-  if (body.password !== 'checker') {
+  if (body.password !== 'checker') { 
     return res.sendStatus(1000);
   }
 
