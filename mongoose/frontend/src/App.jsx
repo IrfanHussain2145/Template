@@ -1,4 +1,5 @@
 import {RouterProvider, createBrowserRouter} from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import {Index} from "./pages";
 import {Create} from "./pages/create";
