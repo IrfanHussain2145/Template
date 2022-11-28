@@ -12,6 +12,25 @@ export function View() {
     })();
   }, []);
 
+  async function delPost(title) {
+    const requestData = JSON.stringify({title});
+    const headers = {"content-type": "application/json"};
+    const req = await fetch('http://localhost:3000/blog/', {body:requestData, headers, method: "DELETE"});
+    if (req.status === 204) {
+      navigate("/view");
+      
+    }
+    else {
+      setError(true);
+    } 
+
+    // ??
+    //When fetch executes successfully, when promise is resolved,
+    //set Done variable to 2
+    
+    console.log(requestData);
+  }
+
   return (
     <div>
       <Link to="/"> Home</Link>
@@ -27,6 +46,7 @@ export function View() {
           >
             <h2 style={{margin: "0.2rem"}}>{post.title}</h2>
             <div>{post.content}</div>
+            <div> <button onClick={() => delPost(post.title)}> Delete </button> </div>
           </div>
         ))}
       </div>

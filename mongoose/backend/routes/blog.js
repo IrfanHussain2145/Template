@@ -31,4 +31,10 @@ router.post("/create-post", async (req, res) => {
   return res.send(blog.toObject());
 });
 
+router.delete("/", async (req, res, next) => {
+  const {title }= req.body;
+  BlogModel.deleteOne({title});
+  return res.sendStatus(204);
+});
+
 export default router;
