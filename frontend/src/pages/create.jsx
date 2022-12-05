@@ -1,47 +1,39 @@
 import {useState} from "react";
 import {Link} from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 export function Create() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [done, setDone] = useState(false);
+  const [error,setError] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-
-  const [error, setError] = useState(false);
 
   async function handleSubmit(e) {
+    setError("");
     e.preventDefault();
     const requestData = JSON.stringify({title, content, password});
     const headers = {"content-type": "application/json"};
-    const req = await fetch('http://localhost:3000/blog/create-post/', {body:requestData, headers, method: "POST"});
-    if (req.status === 1000) {
-      setError(true);
+    const resp = await fetch("http://localhost:3000/blog/create-post", {
+      method: "post",
+      headers,
+      body: requestData,
+    });
+  
+    const json = await resp.json();
+    // add check here 
+    if (json.error){
+      setError(json.error);
+      return;
     }
-    else {
-      navigate("/view");
-    } 
-
-    // ??
-    //When fetch executes successfully, when promise is resolved,
-    //set Done variable to 2
-    
-    console.log(requestData);
+    setDone(true);
   }
-  if (error) {
-    return <div> Incorrect Password 
-      <button onClick={() => setError(false)}> Back </button>
-    </div>
+  if (done) {
+    return (
+      <div>
+        <Link to="/view">Check out your blog post</Link>
+      </div>
+    );
   }
-
-  // if (done) {
-  //   return (
-  //     <div>
-  //       <Link to="/view">Check out your blog post</Link>
-  //     </div>
-  //   );
-  // }
   return (
     <form onSubmit={handleSubmit}>
       <input
@@ -56,13 +48,15 @@ export function Create() {
         ></textarea>
       </div>
       <div>
-        <input
+        <input 
         placeholder="password"
         value={password}
         onChange={(e) => setPassword(e.currentTarget.value)}
+        type="password"
         />
       </div>
       <button>Post</button>
+      {error && <div>{error}</div>}
     </form>
   );
 }
